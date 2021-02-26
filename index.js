@@ -27,10 +27,11 @@ function processFirstItem(stringList, callback) {
  * Study the code for counter1 and counter2. Answer the questions below.
  * 
  * 1. What is the difference between counter1 and counter2?
- * 
+ * A: For counter 1 the count variable is private and inside of the function. Also the counter 1 will store the previous count when it returns the total. 
  * 2. Which of the two uses a closure? How can you tell?
- * 
+ * A: counter1 uses closure. Because of the nested function.
  * 3. In what scenario would the counter1 code be preferable? In what scenario would counter2 be better? 
+ *  Counter 1 is a cleaner, more DRY, and leverages Closure. Counter2 creates a global variable, instead of a block level variable, meaning that its memory usage is higher, and there is no valid reason to create a global scope variable for this to work. 
  *
 */
 
@@ -56,10 +57,9 @@ function counter2() {
 
 Write a function called `inning` that generates a random number of points that a team scored in an inning. This should be a whole number between 0 and 2. */
 
-function inning(/*Code Here*/){
-
-    /*Code Here*/
-
+function inning(){
+const numGenerator =  Math.floor(Math.random() * 3)
+return numGenerator
 }
 
 /* Task 3: finalScore()
@@ -76,10 +76,24 @@ finalScore(inning, 9) might return:
 
 */ 
 
-function finalScore(/*code Here*/){
+function finalScore(inning, num) {
+  let team1 = [];
+  let team2 = [];
 
-  /*Code Here*/
+  //filling both team arrays
+  for (let i = 0; i < num; i++) {
+    team1.push(inning(num));
+  }
 
+  for (let i = 0; i < num; i++) {
+    team2.push(inning(num));
+  }
+  
+ const final = {
+    home: team1.reduce((total, inning) => total + inning),
+    away: team2.reduce((total, inning) => total + inning)
+  };
+  return final;
 }
 
 /* Task 4: 
@@ -104,8 +118,20 @@ and returns the score at each pont in the game, like so:
 
 Final Score: awayTeam - homeTeam */
 
-function scoreboard(/* CODE HERE */) {
-  /* CODE HERE */
+function scoreboard(getInningScore, inning, num) {
+  const final = {home: 0,
+                away:0}
+  for (let i = 0; i < num; i++) {
+    final.home += inning();
+    final.away += inning();
+    
+    getInningScore(i, final)
+  }
+  return final
 }
 
+function newScoreBoard (inning, scoreboard) {
+  console.log(`Inning ${inning}: Home: ${scoreboard.home} - Away: ${scoreboard.away}`)
+}
 
+scoreboard(newScoreBoard, inning, 9)
